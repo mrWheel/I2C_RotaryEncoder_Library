@@ -38,7 +38,6 @@ Create a interrupt service routine:
 
 volatile bool interruptPending  = false;
 
-//===========================================================================================
 ISR_PREFIX void handleInterrupt()
 {
   interruptPending = true;
