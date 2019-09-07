@@ -3,23 +3,23 @@
 <p>Find the project description at <a href="https://willem.aandewiel.nl/">www.aandewiel.nl</a>.</p>
 <br>
 
-This library gives you an interface between your own program and the I2C_RotaryEncoder.
+This library gives an interface between your own program and the I2C_RotaryEncoder.
 
 To use it you have to include this library in your sketch
 
-<code>
+```
 #include <I2C_RotaryEncoder.h>
-</code>
+```
 
-Declare an Encoder object (declare one for every I2C_RotaryEncoder you need):
+Declare an Encoder object (declare one for every I2C_RotaryEncoder):
 
-<code>
+```
 I2CRE Encoder1; // Create instance of the I2CRE object
-</code>
+```
 
 Create a interrupt service routine:
-<code>
 
+```
 #ifdef ARDUINO_ARCH_ESP8266
   #define ISR_PREFIX        ICACHE_RAM_ATTR
 //#define BUILTIN_LED       2
@@ -43,18 +43,18 @@ ISR_PREFIX void handleInterrupt()
 {
   interruptPending = true;
 }
-</code>
+```
 
 And in your <code>setup()</code> function attach the <code>_INTERRUPT_PIN</code> to this ISRoutine:
 
-<code>
+```
   pinMode(_INTERRUPTPIN, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(_INTERRUPTPIN), handleInterrupt, FALLING);
-</code>
+```
 
 In the main <code>loop()</code> function handle <code>interruptPending</code>.
 
-<code>
+```
 void loop() 
 {
   if (interruptPending) {
@@ -80,4 +80,4 @@ void loop()
     }
   }
 }	// loop()
-</code>
+```
