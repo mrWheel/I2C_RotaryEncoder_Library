@@ -1,8 +1,8 @@
 /*
 ***************************************************************************  
 **
-**  File		: I2C_RotaryEncoder.cpp
-**	Version : v0.1
+**  File    : I2C_RotaryEncoder.cpp
+**  Version : v0.1
 **
 **  Copyright (c) 2019 Willem Aandewiel
 **
@@ -24,7 +24,6 @@ bool I2CRE::begin(TwoWire &wireBus, uint8_t deviceAddress)
   _I2Cbus = &wireBus;
   _I2Cbus->begin(); 
   _I2Cbus->setClock(100000);
-  //_I2Cbus->setTimeOut(100);
 
   _I2Caddress = deviceAddress;
 
@@ -91,7 +90,7 @@ bool I2CRE::setRGBcolor(uint32_t RGB)
 {
   return (writeRegRGB( I2CRE_RED, RGB ));
 }
-// Sets the color of a specific color
+// Sets the color of a specific Led
 //-------------------------------------------------------------------------------------
 bool I2CRE::setLedRed(uint8_t red)
 {
@@ -151,13 +150,13 @@ bool I2CRE::writeCommand(byte command)
 //-------------------------------------------------------------------------------------
 uint8_t I2CRE::getStatus()
 {
-	while ((millis() - _statusTimer) < _READDELAY) {
-		delay(1);
-	}
-	_statusTimer = millis();
-	uint8_t tmpStatus = (uint8_t)readReg1Byte(I2CRE_STATUS);
-	_status |= (uint8_t)tmpStatus;
-	_status &= ~(1 << INTERRUPT_BIT);
+  while ((millis() - _statusTimer) < _READDELAY) {
+    delay(1);
+  }
+  _statusTimer = millis();
+  uint8_t tmpStatus = (uint8_t)readReg1Byte(I2CRE_STATUS);
+  _status |= (uint8_t)tmpStatus;
+  _status &= ~(1 << INTERRUPT_BIT);
   return (tmpStatus);
 }
 
@@ -253,11 +252,11 @@ uint8_t I2CRE::getMinorRelease()
 // Reads a uint8_t from a register @addr
 //-------------------------------------------------------------------------------------
 uint8_t I2CRE::readReg1Byte(uint8_t addr)
-{	
-	while ((millis() - _statusTimer) < _READDELAY) {
-		delay(1);
-	}
-	_statusTimer = millis();
+{  
+  while ((millis() - _statusTimer) < _READDELAY) {
+    delay(1);
+  }
+  _statusTimer = millis();
 
   _I2Cbus->beginTransmission((uint8_t)_I2Caddress);
   _I2Cbus->write(addr);
@@ -277,10 +276,10 @@ uint8_t I2CRE::readReg1Byte(uint8_t addr)
 //-------------------------------------------------------------------------------------
 int16_t I2CRE::readReg2Byte(uint8_t addr)
 {
-	while ((millis() - _statusTimer) < _READDELAY) {
-		delay(1);
-	}
-	_statusTimer = millis();
+  while ((millis() - _statusTimer) < _READDELAY) {
+    delay(1);
+  }
+  _statusTimer = millis();
 
   _I2Cbus->beginTransmission((uint8_t)_I2Caddress);
   _I2Cbus->write(addr);
@@ -302,10 +301,10 @@ int16_t I2CRE::readReg2Byte(uint8_t addr)
 //-------------------------------------------------------------------------------------
 int32_t I2CRE::readReg4Byte(uint8_t addr)
 {
-	while ((millis() - _statusTimer) < _READDELAY) {
-		delay(1);
-	}
-	_statusTimer = millis();
+  while ((millis() - _statusTimer) < _READDELAY) {
+    delay(1);
+  }
+  _statusTimer = millis();
 
   _I2Cbus->beginTransmission((uint8_t)_I2Caddress);
   _I2Cbus->write(addr);
@@ -335,10 +334,10 @@ int32_t I2CRE::readReg4Byte(uint8_t addr)
 //-------------------------------------------------------------------------------------
 bool I2CRE::writeReg1Byte(uint8_t addr, uint8_t val)
 {
-	while ((millis() - _statusTimer) < _WRITEDELAY) {
-		delay(1);
-	}
-	_statusTimer = millis();
+  while ((millis() - _statusTimer) < _WRITEDELAY) {
+    delay(1);
+  }
+  _statusTimer = millis();
 
   _I2Cbus->beginTransmission((uint8_t)_I2Caddress);
   _I2Cbus->write(addr);
@@ -354,10 +353,10 @@ bool I2CRE::writeReg1Byte(uint8_t addr, uint8_t val)
 //-------------------------------------------------------------------------------------
 bool I2CRE::writeReg2Byte(uint8_t addr, int16_t val)
 {
-	while ((millis() - _statusTimer) < _WRITEDELAY) {
-		delay(1);
-	}
-	_statusTimer = millis();
+  while ((millis() - _statusTimer) < _WRITEDELAY) {
+    delay(1);
+  }
+  _statusTimer = millis();
 
   _I2Cbus->beginTransmission((uint8_t)_I2Caddress);
   _I2Cbus->write(addr);
@@ -374,19 +373,19 @@ bool I2CRE::writeReg2Byte(uint8_t addr, int16_t val)
 //-------------------------------------------------------------------------------------
 bool I2CRE::writeRegRGB(uint8_t addr, uint32_t RGB)
 {
-	while ((millis() - _statusTimer) < _WRITEDELAY) {
-		delay(1);
-	}
-	_statusTimer = millis();
+  while ((millis() - _statusTimer) < _WRITEDELAY) {
+    delay(1);
+  }
+  _statusTimer = millis();
 
-	//Serial.print("\nwriteReg3Bytes: ");
-	//showRegister(sizeof(val), &val);
+  //Serial.print("\nwriteReg3Bytes: ");
+  //showRegister(sizeof(val), &val);
   _I2Cbus->beginTransmission((uint8_t)_I2Caddress);
   _I2Cbus->write(addr);
   // val is [-------- rrrrrrrr gggggggg bbbbbbbb]
-  _I2Cbus->write(RGB >> 16); 		// Red
-  _I2Cbus->write(RGB >> 8);   		// Green
-  _I2Cbus->write(RGB &0xFF);  		// Blue
+  _I2Cbus->write(RGB >> 16);     // Red
+  _I2Cbus->write(RGB >> 8);       // Green
+  _I2Cbus->write(RGB &0xFF);      // Blue
   if (_I2Cbus->endTransmission() != 0) {
     return (false); // Slave did not ack
   }
@@ -398,17 +397,17 @@ bool I2CRE::writeRegRGB(uint8_t addr, uint32_t RGB)
 //-------------------------------------------------------------------------------------
 bool I2CRE::writeReg3Byte(uint8_t addr, int32_t val)
 {
-	while ((millis() - _statusTimer) < _WRITEDELAY) {
-		delay(1);
-	}
-	_statusTimer = millis();
+  while ((millis() - _statusTimer) < _WRITEDELAY) {
+    delay(1);
+  }
+  _statusTimer = millis();
 
   _I2Cbus->beginTransmission((uint8_t)_I2Caddress);
   _I2Cbus->write(addr);
-  _I2Cbus->write(val &0xFF); 		// LSB
-  _I2Cbus->write(val >> 8);   		// mLSB
-  _I2Cbus->write(val >> 16);  		// mMSB
-  //_I2Cbus->write(val >> 24);  	// MSB
+  _I2Cbus->write(val &0xFF);     // LSB
+  _I2Cbus->write(val >> 8);       // mLSB
+  _I2Cbus->write(val >> 16);      // mMSB
+  //_I2Cbus->write(val >> 24);    // MSB
   if (_I2Cbus->endTransmission() != 0) {
     return (false); // Slave did not ack
   }
@@ -420,10 +419,10 @@ bool I2CRE::writeReg3Byte(uint8_t addr, int32_t val)
 //-------------------------------------------------------------------------------------
 bool I2CRE::writeReg4Byte(uint8_t addr, int32_t val)
 {
-	while ((millis() - _statusTimer) < _WRITEDELAY) {
-		delay(1);
-	}
-	_statusTimer = millis();
+  while ((millis() - _statusTimer) < _WRITEDELAY) {
+    delay(1);
+  }
+  _statusTimer = millis();
 
   _I2Cbus->beginTransmission((uint8_t)_I2Caddress);
   _I2Cbus->write(addr);
@@ -454,70 +453,70 @@ bool I2CRE::isConnected()
 //-------------------------------------------------------------------------------------
 bool I2CRE::isRotValChanged()
 {
-	if (_status & (1 << COUNTUP_BIT) || _status & (1 << COUNTDOWN_BIT)) {
-		_status &= ~(1 << COUNTUP_BIT);
-		_status &= ~(1 << COUNTDOWN_BIT);
-		return true;
-	} 
-	return false;
+  if (_status & (1 << COUNTUP_BIT) || _status & (1 << COUNTDOWN_BIT)) {
+    _status &= ~(1 << COUNTUP_BIT);
+    _status &= ~(1 << COUNTDOWN_BIT);
+    return true;
+  } 
+  return false;
 }
 //-------------------------------------------------------------------------------------
 bool I2CRE::isRotValChangedUp()
 {
-	if (_status & (1 << COUNTUP_BIT)) {
-		_status &= ~(1 << COUNTUP_BIT);
-		return true;
-	} 
-	return false;
+  if (_status & (1 << COUNTUP_BIT)) {
+    _status &= ~(1 << COUNTUP_BIT);
+    return true;
+  } 
+  return false;
 }
 //-------------------------------------------------------------------------------------
 bool I2CRE::isRotValChangedDown()
 {
-	if (_status & (1 << COUNTDOWN_BIT)) {
-		_status &= ~(1 << COUNTDOWN_BIT);
-		return true;
-	} 
-	return false;
+  if (_status & (1 << COUNTDOWN_BIT)) {
+    _status &= ~(1 << COUNTDOWN_BIT);
+    return true;
+  } 
+  return false;
 }
 
 //-------------------------------------------------------------------------------------
 bool I2CRE::isButtonPressed() 
 {
-	if (_status & (1 << PRESSED_BIT)) {
-		_status &= ~(1 << PRESSED_BIT);
-		return true;
-	}
-	return false;
+  if (_status & (1 << PRESSED_BIT)) {
+    _status &= ~(1 << PRESSED_BIT);
+    return true;
+  }
+  return false;
 }
 
 //-------------------------------------------------------------------------------------
 bool I2CRE::isButtonQuickReleased()
 {
-	if (_status & (1 << QUICKRELEASE_BIT)) {
-		_status &= ~(1 << QUICKRELEASE_BIT);
-		return true;
-	}
-	return false;
+  if (_status & (1 << QUICKRELEASE_BIT)) {
+    _status &= ~(1 << QUICKRELEASE_BIT);
+    return true;
+  }
+  return false;
 }
 
 //-------------------------------------------------------------------------------------
 bool I2CRE::isButtonMidReleased()
 {
-	if (_status & (1 << MIDRELEASE_BIT)) {
-		_status &= ~(1 << MIDRELEASE_BIT);
-		return true;
-	}
-	return false;
+  if (_status & (1 << MIDRELEASE_BIT)) {
+    _status &= ~(1 << MIDRELEASE_BIT);
+    return true;
+  }
+  return false;
 }
 
 //-------------------------------------------------------------------------------------
 bool I2CRE::isButtonLongReleased()
 {
-	if (_status & (1 << LONGRELEASE_BIT)) {
-		_status &= ~(1 << LONGRELEASE_BIT);
-		return true;
-	}
-	return false;
+  if (_status & (1 << LONGRELEASE_BIT)) {
+    _status &= ~(1 << LONGRELEASE_BIT);
+    return true;
+  }
+  return false;
 }
 
 //===========================================================================================
@@ -529,7 +528,7 @@ void I2CRE::showRegister(size_t const size, void const * const ptr)
   int i, j;
   Serial.print("[");
   for (i=size-1; i>=0; i--) {
-  	if (i != (size-1)) Serial.print(" ");
+    if (i != (size-1)) Serial.print(" ");
     for (j=7; j>=0; j--) {
       byte = (b[i] >> j) & 1;
       Serial.print(byte);
