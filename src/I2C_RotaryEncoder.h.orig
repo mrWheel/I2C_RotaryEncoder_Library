@@ -1,0 +1,99 @@
+#ifndef _I2C_ROTARYENCODER_H
+#define _I2C_ROTARYENCODER_H
+#include "Arduino.h"
+#include "Wire.h"
+
+#define I2C_SLAVE_ADDRESS 0x3F 
+
+// status bits
+enum  { INTERRUPT_BIT, COUNTUP_BIT, COUNTDOWN_BIT, PRESSED_BIT, QUICKRELEASE_BIT, MIDRELEASE_BIT, LONGRELEASE_BIT };
+enum  { CMD_READCONF, CMD_WRITECONF, CMD_DUM2, CMD_DUM3, CMD_DUM4, CMD_DUM5, CMD_DUM6,  CMD_REBOOT };
+enum  { SET_FLIPMODE, SET_TURNMODE, SET_HWROTDIR, SET_SPARE3, SET_SPARE4, SET_SPARE5, SET_SPARE_6, SET_SPARE7 };
+
+
+//Map to the various registers on the I2C Rotary Encoder
+enum encoderRegisters {
+  I2CRE_STATUS          = 0x00, 
+  I2CRE_ADDRESS         = 0x01,
+  I2CRE_MAJORRELEASE    = 0x02,
+  I2CRE_MINORRELEASE    = 0x03,
+  I2CRE_ROTVAL          = 0x04,	// 2
+  I2CRE_ROTSTEP         = 0x06, // 2
+  I2CRE_ROTMIN          = 0x08, // 2
+  I2CRE_ROTMAX          = 0x0A, // 2
+  I2CRE_ROTSPINTIME     = 0x0C,
+  I2CRE_RED             = 0x0D,
+  I2CRE_GREEN           = 0x0E,
+  I2CRE_BLUE            = 0x0F,
+  I2CRE_DEBOUNCETIME    = 0x10,
+  I2CRE_MIDPRESSTIME    = 0x11,	// 2
+  I2CRE_LONGPRESSTIME   = 0x13,	// 2
+  I2CRE_MODESETTINGS    = 0x15,
+  //----
+  I2CRE_COMMAND         = 0xF0	// -> this is NOT a "real" register!!
+};
+
+#define Verbose1 false
+
+class I2CRE {
+  
+public:
+  I2CRE();
+
+  bool begin(TwoWire &wirePort = Wire, uint8_t deviceAddress = I2C_SLAVE_ADDRESS);
+  bool isConnected();
+
+  int8_t  	getStatus();            	// Returns the number of indents the user has turned the knob
+  int16_t 	getRotVal();              // Returns the number of indents the user has turned the knob
+  int16_t 	getRotStep();             // Returns the number of ticks since last check
+  int16_t 	getRotMin();              // Returns the number of ticks since last check
+  int16_t 	getRotMax();              // Returns the number of ticks since last check
+  uint8_t  	getRotSpinTime();
+  int8_t  	getWhoAmI();
+  uint8_t 	getLedRed();              // Get current value
+  uint8_t 	getLedGreen();            // Get current value
+  uint8_t 	getLedBlue();             // Get current value
+  uint8_t 	getDebounceTime();
+  uint16_t 	getMidPressTime();
+  uint16_t 	getLongPressTime();
+  uint8_t 	getMajorRelease();
+  uint8_t 	getMinorRelease();
+  uint8_t   getModeSettings();
+
+  bool setRotVal(int16_t val);                             //Set the number of indents to a given amount
+  bool setRotStep(int16_t val);                             //Set the number of indents to a given amount
+  bool setRotMin(int16_t val);                             //Set the number of indents to a given amount
+  bool setRotMax(int16_t val);                             //Set the number of indents to a given amount
+  bool setRotSpinTime(uint8_t val);                             //Set the number of indents to a given amount
+  bool setRGBcolor(uint8_t red, uint8_t green, uint8_t blue); //Sets the color of the encoder LEDs, 0-255
+  bool setRGBcolor(uint32_t RGB); 															//Sets the color of the encoder LEDs, 0-255
+  bool setLedRed(uint8_t);                                 //Set the red LED, 0-255
+  bool setLedGreen(uint8_t);                               //Set the green LED, 0-255
+  bool setLedBlue(uint8_t);                                //Set the blue LED, 0-255
+  bool setDebounceTime(uint8_t);
+  bool setMidPressTime(uint16_t);
+  bool setLongPressTime(uint16_t);
+  bool setModeSetBit(uint8_t);
+  bool setModeClearBit(uint8_t);
+  bool writeCommand(uint8_t);
+
+  byte findSlaveAddress();
+  bool setNewAddress(uint8_t newAddress); //Change the I2C address to newAddress
+
+private:
+  TwoWire *_i2cPort;
+  uint8_t _deviceAddress;
+
+  uint8_t readReg1Byte(uint8_t reg);
+  int16_t readReg2Byte(uint8_t reg);
+  int32_t readReg4Byte(uint8_t reg);
+
+  bool writeReg1Byte(uint8_t reg, uint8_t val);
+  bool writeReg2Byte(uint8_t reg, int16_t val);
+  bool writeReg3Byte(uint8_t reg, int32_t val);
+  bool writeReg4Byte(uint8_t reg, int32_t val);
+
+  void showRegister(size_t const size, void const * const ptr) ;
+};
+
+#endif

@@ -1,0 +1,338 @@
+
+#include "./I2C_RotaryEncoder.h"
+#include "Arduino.h"
+
+//Constructor
+I2CRE::I2CRE() { }
+
+//Initializes the sensor with basic settings
+//Returns false if sensor is not detected
+bool I2CRE::begin(TwoWire &wirePort, uint8_t deviceAddress) {
+  _i2cPort = &wirePort;
+  _i2cPort->begin(); //This resets any setClock() the user may have done
+
+  _deviceAddress = deviceAddress;
+
+  if (isConnected() == false)
+    return (false); //Check for sensor presence
+
+  return (true); //We're all setup!
+} // begin()
+
+//Returns true if I2C device ack's
+bool I2CRE::isConnected() {
+  _i2cPort->beginTransmission((uint8_t)_deviceAddress);
+  if (_i2cPort->endTransmission() != 0)
+    return (false); //Sensor did not ACK
+  return (true);
+} // isConnected()
+
+//Change the I2C address of this address to newAddress
+bool I2CRE::setNewAddress(uint8_t newAddress) {
+  if (writeReg1Byte(I2CRE_ADDRESS, newAddress)) {
+    //Once the address is changed, we need to change it in the library
+    _deviceAddress = newAddress;
+    //-->> writeReg1Byte(I2CRE_COMMAND, I2CRE_ADDRESS);
+    return true;
+  }
+  return false;
+
+} // newAddress()
+
+//-------------------------------------------------------------------------------------
+bool I2CRE::setRotVal(int16_t val) {
+  return (writeReg2Byte(I2CRE_ROTVAL, val));
+}
+//-------------------------------------------------------------------------------------
+bool I2CRE::setRotMin(int16_t val) {
+  return (writeReg2Byte(I2CRE_ROTMIN, val));
+}
+//-------------------------------------------------------------------------------------
+bool I2CRE::setRotMax(int16_t val) {
+  return (writeReg2Byte(I2CRE_ROTMAX, val));
+}
+//-------------------------------------------------------------------------------------
+bool I2CRE::setRotStep(int16_t val) {
+  return (writeReg2Byte(I2CRE_ROTSTEP, val));
+}
+//-------------------------------------------------------------------------------------
+bool I2CRE::setRotSpinTime(uint8_t millisecs) {
+  return (writeReg1Byte(I2CRE_ROTSPINTIME, millisecs));
+}
+//Sets the color of the encoder LEDs
+//-------------------------------------------------------------------------------------
+bool I2CRE::setRGBcolor(uint8_t red, uint8_t green, uint8_t blue) {
+  return (writeReg4Byte( I2CRE_RED, (uint32_t)red << 16 
+                                  | (uint32_t)green << 8 
+                                            | blue)      );
+} // setColor()
+//-------------------------------------------------------------------------------------
+bool I2CRE::setRGBcolor(uint32_t RGB) {
+  return (writeReg3Byte( I2CRE_RED, RGB ));
+}
+//Sets the color of a specific color
+//-------------------------------------------------------------------------------------
+bool I2CRE::setLedRed(uint8_t red) {
+//-------------------------------------------------------------------------------------
+  return (writeReg1Byte(I2CRE_RED, red));
+}
+//-------------------------------------------------------------------------------------
+bool I2CRE::setLedGreen(uint8_t green) {
+//-------------------------------------------------------------------------------------
+  return (writeReg1Byte(I2CRE_GREEN, green));
+}
+//-------------------------------------------------------------------------------------
+bool I2CRE::setLedBlue(uint8_t blue) {
+  return (writeReg1Byte(I2CRE_BLUE, blue));
+}
+//-------------------------------------------------------------------------------------
+bool I2CRE::setDebounceTime(uint8_t microsecs) {
+  return (writeReg1Byte(I2CRE_DEBOUNCETIME, microsecs));
+}
+//-------------------------------------------------------------------------------------
+bool I2CRE::setMidPressTime(uint16_t millisecs) {
+  return (writeReg2Byte(I2CRE_MIDPRESSTIME, millisecs));
+}
+//-------------------------------------------------------------------------------------
+bool I2CRE::setLongPressTime(uint16_t millisecs) {
+  return (writeReg2Byte(I2CRE_LONGPRESSTIME, millisecs));
+}
+//-------------------------------------------------------------------------------------
+bool I2CRE::setModeSetBit(uint8_t bit) {
+	byte modeReg = getModeSettings();
+	modeReg |= (1 << bit);
+  return (writeReg1Byte(I2CRE_MODESETTINGS, modeReg));
+}
+//-------------------------------------------------------------------------------------
+bool I2CRE::setModeClearBit(uint8_t bit) {
+	byte modeReg = getModeSettings();
+	modeReg &= ~(1 << bit);
+  return (writeReg1Byte(I2CRE_MODESETTINGS, modeReg));
+}
+//-------------------------------------------------------------------------------------
+bool I2CRE::writeCommand(byte command) {
+  return (writeReg1Byte(I2CRE_COMMAND, command));
+}
+
+//-------------------------------------------------------------------------------------
+int8_t I2CRE::getStatus() {
+//-------------------------------------------------------------------------------------
+  return (readReg1Byte(I2CRE_STATUS));
+}
+
+//-------------------------------------------------------------------------------------
+int8_t I2CRE::getWhoAmI() {
+//-------------------------------------------------------------------------------------
+  return (readReg1Byte(I2CRE_ADDRESS));
+}
+
+//-------------------------------------------------------------------------------------
+int16_t I2CRE::getRotVal() {
+//-------------------------------------------------------------------------------------
+  return (readReg2Byte(I2CRE_ROTVAL));
+}
+
+//-------------------------------------------------------------------------------------
+int16_t I2CRE::getRotMin() {
+//-------------------------------------------------------------------------------------
+  return ((int16_t)readReg2Byte(I2CRE_ROTMIN));
+}
+
+//-------------------------------------------------------------------------------------
+int16_t I2CRE::getRotMax() {
+//-------------------------------------------------------------------------------------
+  return (readReg2Byte(I2CRE_ROTMAX));
+}
+
+//-------------------------------------------------------------------------------------
+int16_t I2CRE::getRotStep() {
+//-------------------------------------------------------------------------------------
+  return (readReg2Byte(I2CRE_ROTSTEP));
+}
+
+//-------------------------------------------------------------------------------------
+uint8_t I2CRE::getRotSpinTime() {
+//-------------------------------------------------------------------------------------
+  return (readReg1Byte(I2CRE_ROTSPINTIME));
+}
+
+//Returns the current value of a color
+//-------------------------------------------------------------------------------------
+uint8_t I2CRE::getLedRed() {
+  return (readReg1Byte(I2CRE_RED));
+}
+//-------------------------------------------------------------------------------------
+uint8_t I2CRE::getLedGreen() {
+  return (readReg1Byte(I2CRE_GREEN));
+}
+//-------------------------------------------------------------------------------------
+uint8_t I2CRE::getLedBlue() {
+  return (readReg1Byte(I2CRE_BLUE));
+}
+//-------------------------------------------------------------------------------------
+uint8_t I2CRE::getDebounceTime() {
+  return (readReg1Byte(I2CRE_DEBOUNCETIME));
+}
+//-------------------------------------------------------------------------------------
+uint16_t I2CRE::getMidPressTime() {
+  return (readReg2Byte(I2CRE_MIDPRESSTIME));
+}
+//-------------------------------------------------------------------------------------
+uint16_t I2CRE::getLongPressTime() {
+  return (readReg2Byte(I2CRE_LONGPRESSTIME));
+}
+//-------------------------------------------------------------------------------------
+uint8_t I2CRE::getModeSettings() {
+  return (readReg1Byte(I2CRE_MODESETTINGS));
+}
+//-------------------------------------------------------------------------------------
+uint8_t I2CRE::getMajorRelease() {
+  return (readReg1Byte(I2CRE_MAJORRELEASE));
+}
+//-------------------------------------------------------------------------------------
+uint8_t I2CRE::getMinorRelease() {
+  return (readReg1Byte(I2CRE_MINORRELEASE));
+}
+
+
+//Reads a uint8_t from a register @addr
+//-------------------------------------------------------------------------------------
+uint8_t I2CRE::readReg1Byte(uint8_t addr) {
+//-------------------------------------------------------------------------------------
+  _i2cPort->beginTransmission((uint8_t)_deviceAddress);
+  _i2cPort->write(addr);
+  if (_i2cPort->endTransmission() != 0) {
+    return (0); //Device failed to ack
+  }
+
+  _i2cPort->requestFrom((uint8_t)_deviceAddress, (uint8_t) 1);
+  if (_i2cPort->available()) {
+    return (_i2cPort->read());
+  }
+
+  return (0); //Device failed to respond
+}
+
+//Reads an int16_t from a register @addr
+//-------------------------------------------------------------------------------------
+int16_t I2CRE::readReg2Byte(uint8_t addr) {
+//-------------------------------------------------------------------------------------
+  _i2cPort->beginTransmission((uint8_t)_deviceAddress);
+  _i2cPort->write(addr);
+  if (_i2cPort->endTransmission() != 0) {
+    return (0); //Device failed to ack
+  }
+
+  _i2cPort->requestFrom((uint8_t)_deviceAddress, (uint8_t) 2);
+  if (_i2cPort->available()) {
+    uint8_t LSB = _i2cPort->read();
+    uint8_t MSB = _i2cPort->read();
+    return ((int16_t)MSB << 8 | LSB);
+  }
+
+  return (0); //Device failed to respond
+}
+
+//Reads an int32_t from a register @addr
+//-------------------------------------------------------------------------------------
+int32_t I2CRE::readReg4Byte(uint8_t addr) {
+//-------------------------------------------------------------------------------------
+  _i2cPort->beginTransmission((uint8_t)_deviceAddress);
+  _i2cPort->write(addr);
+  if (_i2cPort->endTransmission() != 0) {
+    return (0); //Device failed to ack
+  }
+
+  _i2cPort->requestFrom((uint8_t)_deviceAddress, (uint8_t) 4);
+  delay(10);
+  if (_i2cPort->available()) {
+    uint8_t LSB   = _i2cPort->read();
+    uint8_t mLSB  = _i2cPort->read();
+    uint8_t mMSB  = _i2cPort->read();
+    uint8_t MSB   = _i2cPort->read();
+    uint32_t comb = MSB << 24 | mMSB << 16 | mLSB << 8 | LSB;
+    return ((int32_t)MSB << 24 | mMSB << 16 | mLSB << 8 | LSB);
+  }
+
+  return (0); //Device failed to respond
+}
+
+//Write a 1 byte value to a register
+//-------------------------------------------------------------------------------------
+bool I2CRE::writeReg1Byte(uint8_t addr, uint8_t val) {
+//-------------------------------------------------------------------------------------
+  _i2cPort->beginTransmission((uint8_t)_deviceAddress);
+  _i2cPort->write(addr);
+  _i2cPort->write(val);
+  if (_i2cPort->endTransmission() != 0) {
+    return (false); //Device failed to ack
+  }
+
+  return (true);
+}
+
+//Write a 2 byte value to a register
+//-------------------------------------------------------------------------------------
+bool I2CRE::writeReg2Byte(uint8_t addr, int16_t val) {
+//-------------------------------------------------------------------------------------
+  _i2cPort->beginTransmission((uint8_t)_deviceAddress);
+  _i2cPort->write(addr);
+  _i2cPort->write(val & 0xFF); //LSB
+  _i2cPort->write(val >> 8);   //MSB
+  if (_i2cPort->endTransmission() != 0) {
+    return (false); //Device failed to ack
+  }
+
+  return (true);
+}
+
+//Write a 3 byte value to a register
+//-------------------------------------------------------------------------------------
+bool I2CRE::writeReg3Byte(uint8_t addr, int32_t val) {
+//-------------------------------------------------------------------------------------
+  _i2cPort->beginTransmission((uint8_t)_deviceAddress);
+  _i2cPort->write(addr);
+  _i2cPort->write(val & 0xFF); //LSB
+  _i2cPort->write(val >> 8);   //mLSB
+  _i2cPort->write(val >> 16);  //mMSB
+  //_i2cPort->write(val >> 24);  //MSB
+  if (_i2cPort->endTransmission() != 0) {
+    return (false); //Device failed to ack
+  }
+
+  return (true);
+}
+
+//Write a 4 byte value to a register
+//-------------------------------------------------------------------------------------
+bool I2CRE::writeReg4Byte(uint8_t addr, int32_t val) {
+//-------------------------------------------------------------------------------------
+  _i2cPort->beginTransmission((uint8_t)_deviceAddress);
+  _i2cPort->write(addr);
+  _i2cPort->write(val & 0xFF); //LSB
+  _i2cPort->write(val >> 8);   //mLSB
+  _i2cPort->write(val >> 16);  //mMSB
+  _i2cPort->write(val >> 24);  //MSB
+  if (_i2cPort->endTransmission() != 0) {
+    return (false); //Device failed to ack
+  }
+
+  return (true);
+}
+
+byte I2CRE::findSlaveAddress() {
+  byte r, error;
+  
+  for (byte address = 1; address < 127; address++) {
+    _i2cPort->beginTransmission(address);
+    error = _i2cPort->endTransmission();
+    if (error) {
+    } else {
+      return address;
+    }
+  }
+  return 0xFF;
+  
+} // findSlaveAddress()
+
+//} // I2CRE()
