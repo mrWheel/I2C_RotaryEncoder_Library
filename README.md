@@ -102,11 +102,31 @@ The library gives you the following setters:
 | setDebounceTime() | bool | uint8_t| set the Debounce Time of the switch (5 .. 250 micro seconds)|
 | setMidPressTime() | bool | uint16_t|set the Mid Press Time of the switch (100 .. 5000 milli seconds)|
 | setLongPressTime() | bool | uint16_t| set the Long Press Time of the switch (300 .. 10000 milli seconds)|
-| setModeSetBit() | bool | uint8_t|set the Mode Bit (STNG_HWROTDIR | STNG_FLIPMODE | STNG_TURNMODE)|
-| setModeClearBit() | bool | uint8_t| clears the Mode Bit (STNG_HWROTDIR | STNG_FLIPMODE | STNG_TURNMODE)|
-| set  writeCommand() | bool | uint8_t| write a command to the Slave (CMD_READCONF | CMD_WRITECONF | CMD_REBOOT)|
+| setModeSetBit() | bool | uint8_t|set the Mode Bit (STNG_HWROTDIR \| STNG_FLIPMODE \| STNG_TURNMODE)|
+| setModeClearBit() | bool | uint8_t| clears the Mode Bit (STNG_HWROTDIR \| STNG_FLIPMODE \| STNG_TURNMODE)|
+| set  writeCommand() | bool | uint8_t| write a command to the Slave (CMD_READCONF \| CMD_WRITECONF \| CMD_REBOOT)|
 | setI2Caddress() | bool | uint8_t | set a new I2C address for this Slave (1 .. 127)|
 
+The library gives you the following getters:
+
+| Getter             | Returns  | Parms | Description |
+|:-------------------|:--------:|:-----:|:------------|
+| getStatus()        | uint8_t  | none  | reads the status byte
+| getRotVal()        | int16_t  | none  | read the value of the rotary (-1024 .. +1024)
+| getRotStep()       | int16_t  | none  | read the rotary Step (1 .. 50)
+| getRotMin()        | int16_t  | none  | read the minimum rotary value (-1024 .. +1024)
+| getRotMax()        | int16_t  | none  | read the maximum rotary value (-1024 .. +1024)
+| getRotSpinTime()   | uint8_t  | none  | read the rotary spin time (2 .. 100 milli seconds)
+| getWhoAmI()        | int8_t   | none  | read the Address Register
+| getLedRed()        | uint8_t  | none  | read the current Red led PWM value (0 .. 255)
+| getLedGreen()      | uint8_t  | none  | read the current Green led PWM value (0 .. 255)
+| getLedBlue()       | uint8_t  | none  | read the current Blue led PWM value (0 .. 255)
+| getDebounceTime()  | uint8_t  | none  | read the Debounce Time of the switch (5 .. 250 micro seconds)
+| getMidPressTime()  | uint16_t | none  | read the Mid Press Time of the switch (100 .. 5000 milli seconds)
+| getLongPressTime() | uint16_t | none  | read the Long Press Time of the switch (300 .. 10000 milli seconds)
+| getMajorRelease()  | uint8_t  | none  | read the Major Firmware Release byte (0 .. 255)
+| getMinorRelease()  | uint8_t  | none  | read the Minor Firmware Release byte (0 .. 255)
+| getModeSettings()  | uint8_t  | none  | read the Mode register byte (0 .. 255)
 
 
 <center><img src="images/I2CRE_Factory_Parts.png"></center>
