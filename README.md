@@ -87,8 +87,8 @@ void loop()
 
 The library gives you the following setters:
 
-| setter | returns | parms | function |
-|--------|---------|-------|----------|
+| Setter | Returns | Parms | Description |
+|:-------|:-------:|:------|:---------|
 | setRotVal() | bool | int16_t | set the value of the Rotary Encoder (-1024 .. + 1024)|
 | setRotStep() | bool | int16_t | set the rotary Step (1 .. 50) |
 | setRotMin() | bool | int16_t | set the Minimum rotary value (-1024 .. +1024)|
