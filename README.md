@@ -86,6 +86,7 @@ void loop()
 <center><img src="images/I2C_RotaryEncoder_v22-PCB_top.png"></center>
 
 The library gives you the following setters:
+
 | setter | returns | parms | function |
 |--------|---------|-------|----------|
 | setRotVal() | bool | int16_t | set the value of the Rotary Encoder (-1024 .. + 1024)|
