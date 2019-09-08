@@ -128,5 +128,17 @@ The library gives you the following getters:
 | getMinorRelease()  | uint8_t  | none  | read the Minor Firmware Release byte (0 .. 255)
 | getModeSettings()  | uint8_t  | none  | read the Mode register byte (0 .. 255)
 
+And the library gives you the following helpers:
+
+| Helper                 | Returns | Parms | Description |
+|:-----------------------|:-------:|:-----:|:------------|
+|isRotValChanged()       | bool    | none  | true if the Rotary Value has changed
+|isRotValChangedUp()     | bool    | none  | true if the Rotary Value > previous value
+|isRotValChangedDown()   | bool    | none  | true if the Rotary Value < previous value
+|isButtonPressed()       | bool    | none  | true if the Button is pressed
+|isButtonQuickReleased() | bool    | none  | true if the Button is released before midPressTime
+|isButtonMidReleased()   | bool    | none  | true if the Button is released between midPressTime and longPressTime
+|isButtonLongReleased()  | bool    | none  | true if the Button is released after longPressTime
+
 
 <center><img src="images/I2CRE_Factory_Parts.png"></center>
