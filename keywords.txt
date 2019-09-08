@@ -7,6 +7,7 @@
 ###########################################
 
 I2CRE                	KEYWORD1
+I2C_RotaryEncoder   	KEYWORD1
 INTERRUPT_BIT        	KEYWORD1
 COUNTUP_BIT          	KEYWORD1
 COUNTDOWN_BIT        	KEYWORD1

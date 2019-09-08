@@ -85,4 +85,27 @@ void loop()
 
 <center><img src="images/I2C_RotaryEncoder_v22-PCB_top.png"></center>
 
+The library gives you the following setters:
+| setter | returns | parms | function |
+|--------|---------|-------|----------|
+| setRotVal() | bool | int16_t | set the value of the Rotary Encoder (-1024 .. + 1024)|
+| setRotStep() | bool | int16_t | set the rotary Step (1 .. 50) |
+| setRotMin() | bool | int16_t | set the Minimum rotary value (-1024 .. +1024)|
+| setRotMax() | bool | int16_t | set the Maximum rotary value (-1024 .. +1024)|
+| setRotSpinTime() | bool | uint8_t | set the Rotary Spin thime value (2 .. 100 milli seconds)|
+| setRGBcolor() | bool | uint8_t, uint8_t, uint8_t|set the color of all 3 leds  Red, Green, Blue<br>(0 .. 255, 0 .. 255, 0 .. 255)|
+| setRGBcolor() | bool | uint32_t |set the RGB color of all 3 leds (0x000000 .. 0xFFFFFF)|
+| setLedRed() | bool | uint8_t| set the PWM value of the Red led (0 .. 255)|
+| setLedGreen() | bool | uint8_t| set the PWM value of the Green led (0 .. 255)|
+| setLedBlue() | bool | uint8_t|set the PWM value of the Blue led (0 .. 255)|
+| setDebounceTime() | bool | uint8_t| set the Debounce Time of the switch (5 .. 250 micro seconds)|
+| setMidPressTime() | bool | uint16_t|set the Mid Press Time of the switch (100 .. 5000 milli seconds)|
+| setLongPressTime() | bool | uint16_t| set the Long Press Time of the switch (300 .. 10000 milli seconds)|
+| setModeSetBit() | bool | uint8_t|set the Mode Bit (STNG_HWROTDIR | STNG_FLIPMODE | STNG_TURNMODE)|
+| setModeClearBit() | bool | uint8_t| clears the Mode Bit (STNG_HWROTDIR | STNG_FLIPMODE | STNG_TURNMODE)|
+| set  writeCommand() | bool | uint8_t| write a command to the Slave (CMD_READCONF | CMD_WRITECONF | CMD_REBOOT)|
+| setI2Caddress() | bool | uint8_t | set a new I2C address for this Slave (1 .. 127)|
+
+
+
 <center><img src="images/I2CRE_Factory_Parts.png"></center>
