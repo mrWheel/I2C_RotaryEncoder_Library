@@ -5,6 +5,8 @@
 
 This library gives an interface between your own program and the I2C_RotaryEncoder.
 
+<center><img src="images/I2C_RotaryEncoder_v22-3D.png"></center>
+
 To use it you have to include this library in your sketch
 
 ```
@@ -80,3 +82,7 @@ void loop()
   }
 }	// loop()
 ```
+
+<center><img src="images/I2C_RotaryEncoder_v22-PCB_top.png"></center>
+
+<center><img src="images/I2CRE_Factory_Parts.png"></center>

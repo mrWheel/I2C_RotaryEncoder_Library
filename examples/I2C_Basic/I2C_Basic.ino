@@ -3,9 +3,9 @@
 **
 **  Program     : I2C_Basic
 */
-#define _FW_VERSION  "v0.1 (02-09-2019)"
+#define _FW_VERSION  "v0.2 (08-09-2019)"
 /*
-**  Description : Read Rotary Value and Button States
+**  Description : Demo "howto" Read Rotary Value and Button States
 **
 **  Copyright (c) 2019 Willem Aandewiel
 **
@@ -14,9 +14,11 @@
 */
 
 
-#define  I2C_DEFAULT_ADDRESS  0x28    // the 7-bit address 
+#define I2C_DEFAULT_ADDRESS  0x28    // the 7-bit address 
 //#define _SDA                  4
 //#define _SCL                  5
+#define LED_ON                  0
+#define LED_OFF               255
 
 #ifdef ARDUINO_ARCH_ESP8266
 	#define ISR_PREFIX        ICACHE_RAM_ATTR
@@ -144,7 +146,7 @@ void setup()
   Serial.println(F(".. done"));
 
   pinMode(BUILTIN_LED, OUTPUT);
-  digitalWrite(BUILTIN_LED, LOW);
+  digitalWrite(BUILTIN_LED, LED_ON);
 
   Serial.print(F("Attach Interrupt on pin ["));
   Serial.print(_INTERRUPTPIN);
@@ -175,7 +177,10 @@ void setup()
   Encoder.setRotMin(0);                 // set Minimal value of the RotEncoder
   Encoder.setRotMax(255);               // set Maximal value of the RotEncoder
   Encoder.setRotStep(5);                // change RotVal 5 positions per click
-  Encoder.setModeSetBit(SET_FLIPMODE);  // Flip from Max to Min and from Min to Max
+  Encoder.setRotSpinTime(20);           // milli Seconds
+  Encoder.setDebounceTime(50);          // in micro Seconds
+  Encoder.setModeSetBit(STNG_FLIPMODE); // Flip from Max to Min and from Min to Max
+  Encoder.setLedGreen(128);             // turn green led on half intensity
 
   interruptPending  = false;
 
@@ -187,7 +192,6 @@ void setup()
 //===========================================================================================
 void loop()
 {
-
   if (interruptPending) {
     interruptPending = false;
     handleRotaryEncoder();
