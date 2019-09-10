@@ -127,7 +127,7 @@ The library gives you the following getters:
 | getMajorRelease()  | uint8_t  | none  | read the Major Firmware Release byte (0 .. 255)
 | getMinorRelease()  | uint8_t  | none  | read the Minor Firmware Release byte (0 .. 255)
 | getModeSettings()  | uint8_t  | none  | read the Mode register byte (0 .. 255)
-| getModeSettings()  | bool     | uint8_t  | read the Mode register byte and test against Parm-Bit
+| getModeSettings()  | bool     | uint8_t  | read the Mode register byte and test against (STNG_HWROTDIR \| STNG_FLIPMODE \| STNG_TURNMODE)
 
 And the library gives you the following helpers:
 
