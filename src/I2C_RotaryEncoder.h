@@ -2,7 +2,7 @@
 ***************************************************************************  
 **
 **  File    : I2C_RotaryEncoder.h
-**  Version : v0.1
+**  Version : v1.2
 **
 **  Copyright (c) 2019 Willem Aandewiel
 **
@@ -65,10 +65,10 @@ public:
 //-------------------------- GETTERS --------------------------------------------------
 //-------------------------------------------------------------------------------------
   uint8_t   getStatus();                  // reads the status byte
-  int16_t   getRotVal();                  // read the value of the rotary (-1024 .. +1024)
+  int16_t   getRotVal();                  // read the value of the rotary (-5000 .. +5000)
   int16_t   getRotStep();                 // read the rotary Step (1 .. 50)
-  int16_t   getRotMin();                  // read the minimum rotary value (-1024 .. +1024)
-  int16_t   getRotMax();                  // read the maximum rotary value (-1024 .. +1024)
+  int16_t   getRotMin();                  // read the minimum rotary value (-5000 .. +5000)
+  int16_t   getRotMax();                  // read the maximum rotary value (-5000 .. +5000)
   uint8_t   getRotSpinTime();             // read the rotary spin time (2 .. 100 milli seconds)
   int8_t    getWhoAmI();                  // read the Address Register
   uint8_t   getLedRed();                  // read the current Red led PWM value (0 .. 255)
@@ -80,14 +80,15 @@ public:
   uint8_t   getMajorRelease();            // read the Major Firmware Release byte (0 .. 255)
   uint8_t   getMinorRelease();            // read the Minor Firmware Release byte (0 .. 255)
   uint8_t   getModeSettings();            // read the Mode register byte (0 .. 255)
+  bool      getModeSettings(uint8_t);     // read a Mode register Bit (true if set/1 otherwise false/0)
 
 //-------------------------------------------------------------------------------------
 //-------------------------- SETTERS --------------------------------------------------
 //-------------------------------------------------------------------------------------
-  bool      setRotVal(int16_t val);       // set the value of the Rotary Encoder (-1024 .. + 1024)
+  bool      setRotVal(int16_t val);       // set the value of the Rotary Encoder (-5000 .. + 5000)
   bool      setRotStep(int16_t val);      // set the rotary Step (1 .. 50)
-  bool      setRotMin(int16_t val);       // set the Minimum rotary value (-1024 .. +1024)
-  bool      setRotMax(int16_t val);       // set the Maximum rotary value (-1024 .. +1024)
+  bool      setRotMin(int16_t val);       // set the Minimum rotary value (-5000 .. +5000)
+  bool      setRotMax(int16_t val);       // set the Maximum rotary value (-5000 .. +5000)
   bool      setRotSpinTime(uint8_t val);  // set the Rotary Spin thime value (2 .. 100 milli seconds)
                                           // set the color of all 3 leds  Red, Green, Blue
   bool      setRGBcolor(uint8_t red, uint8_t green, uint8_t blue);  // (0 .. 255, 0 .. 255, 0 .. 255)

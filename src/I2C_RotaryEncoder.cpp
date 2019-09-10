@@ -2,7 +2,7 @@
 ***************************************************************************  
 **
 **  File    : I2C_RotaryEncoder.cpp
-**  Version : v0.1
+**  Version : v1.2
 **
 **  Copyright (c) 2019 Willem Aandewiel
 **
@@ -232,7 +232,11 @@ uint8_t I2CRE::getModeSettings()
 {
   return (readReg1Byte(I2CRE_MODESETTINGS));
 }
-
+//-------------------------------------------------------------------------------------
+bool I2CRE::getModeSettings(uint8_t testBit)
+{
+	return ( readReg1Byte(I2CRE_MODESETTINGS) & (1<<testBit) );
+}
 //-------------------------------------------------------------------------------------
 uint8_t I2CRE::getMajorRelease()
 {

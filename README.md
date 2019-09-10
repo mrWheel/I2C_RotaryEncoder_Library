@@ -1,6 +1,6 @@
 # Arduino library for the I2C_RotaryEncoder
 
-<p>Find the project description at <a href="https://willem.aandewiel.nl/">www.aandewiel.nl</a>.</p>
+<p>Find the project description at <a href="https://willem.aandewiel.nl/">www.aandewiel.nl</a> (not yet but soon).</p>
 <br>
 
 This library gives an interface between your own program and the I2C_RotaryEncoder.
@@ -87,35 +87,35 @@ void loop()
 
 The library gives you the following setters:
 
-| Setter | Returns | Parms | Description |
-|:-------|:-------:|:------|:---------|
-| setRotVal() | bool | int16_t | set the value of the Rotary Encoder (-1024 .. + 1024)|
-| setRotStep() | bool | int16_t | set the rotary Step (1 .. 50) |
-| setRotMin() | bool | int16_t | set the Minimum rotary value (-1024 .. +1024)|
-| setRotMax() | bool | int16_t | set the Maximum rotary value (-1024 .. +1024)|
-| setRotSpinTime() | bool | uint8_t | set the Rotary Spin thime value (2 .. 100 milli seconds)|
-| setRGBcolor() | bool | uint8_t, uint8_t, uint8_t|set the color of all 3 leds  Red, Green, Blue<br>(0 .. 255, 0 .. 255, 0 .. 255)|
-| setRGBcolor() | bool | uint32_t |set the RGB color of all 3 leds (0x000000 .. 0xFFFFFF)|
-| setLedRed() | bool | uint8_t| set the PWM value of the Red led (0 .. 255)|
-| setLedGreen() | bool | uint8_t| set the PWM value of the Green led (0 .. 255)|
-| setLedBlue() | bool | uint8_t|set the PWM value of the Blue led (0 .. 255)|
-| setDebounceTime() | bool | uint8_t| set the Debounce Time of the switch (5 .. 250 micro seconds)|
-| setMidPressTime() | bool | uint16_t|set the Mid Press Time of the switch (100 .. 5000 milli seconds)|
-| setLongPressTime() | bool | uint16_t| set the Long Press Time of the switch (300 .. 10000 milli seconds)|
-| setModeSetBit() | bool | uint8_t|set the Mode Bit (STNG_HWROTDIR \| STNG_FLIPMODE \| STNG_TURNMODE)|
-| setModeClearBit() | bool | uint8_t| clears the Mode Bit (STNG_HWROTDIR \| STNG_FLIPMODE \| STNG_TURNMODE)|
-| set  writeCommand() | bool | uint8_t| write a command to the Slave (CMD_READCONF \| CMD_WRITECONF \| CMD_REBOOT)|
-| setI2Caddress() | bool | uint8_t | set a new I2C address for this Slave (1 .. 127)|
+| Setter             | Returns | Parms    | Description             |
+|:-------------------|:-------:|:---------|:------------------------|
+| setRotVal()        | bool    | int16_t  | set the value of the Rotary Encoder (-5000 .. + 5000)|
+| setRotStep()       | bool    | int16_t  | set the rotary Step (1 .. 50) |
+| setRotMin()        | bool    | int16_t  | set the Minimum rotary value (-5000 .. +5000)|
+| setRotMax()        | bool    | int16_t  | set the Maximum rotary value (-5000 .. +5000)|
+| setRotSpinTime()   | bool    | uint8_t  | set the Rotary Spin thime value (2 .. 100 milli seconds)|
+| setRGBcolor()      | bool    | uint8_t, uint8_t, uint8_t|set the color of all 3 leds  Red, Green, Blue (0 .. 255, 0 .. 255, 0 .. 255)|
+| setRGBcolor()      | bool    | uint32_t | set the RGB color of all 3 leds (0x000000 .. 0xFFFFFF)|
+| setLedRed()        | bool    | uint8_t  | set the PWM value of the Red led (0 .. 255)|
+| setLedGreen()      | bool    | uint8_t  | set the PWM value of the Green led (0 .. 255)|
+| setLedBlue()       | bool    | uint8_t  | set the PWM value of the Blue led (0 .. 255)|
+| setDebounceTime()  | bool    | uint8_t  | set the Debounce Time of the switch (5 .. 250 micro seconds)|
+| setMidPressTime()  | bool    | uint16_t | set the Mid Press Time of the switch (100 .. 5000 milli seconds)|
+| setLongPressTime() | bool    | uint16_t | set the Long Press Time of the switch (300 .. 10000 milli seconds)|
+| setModeSetBit()    | bool    | uint8_t  | set the Mode Bit (STNG_HWROTDIR \| STNG_FLIPMODE \| STNG_TURNMODE)|
+| setModeClearBit()  | bool    | uint8_t  | clears the Mode Bit (STNG_HWROTDIR \| STNG_FLIPMODE \| STNG_TURNMODE)|
+| setI2Caddress()    | bool    | uint8_t  | set a new I2C address for this Slave (1 .. 127)|
+| writeCommand()     | bool    | uint8_t  | write a command to the Slave (CMD_READCONF \| CMD_WRITECONF \| CMD_REBOOT)|
 
 The library gives you the following getters:
 
 | Getter             | Returns  | Parms | Description |
 |:-------------------|:--------:|:-----:|:------------|
 | getStatus()        | uint8_t  | none  | reads the status byte
-| getRotVal()        | int16_t  | none  | read the value of the rotary (-1024 .. +1024)
+| getRotVal()        | int16_t  | none  | read the value of the rotary (-5000 .. +5000)
 | getRotStep()       | int16_t  | none  | read the rotary Step (1 .. 50)
-| getRotMin()        | int16_t  | none  | read the minimum rotary value (-1024 .. +1024)
-| getRotMax()        | int16_t  | none  | read the maximum rotary value (-1024 .. +1024)
+| getRotMin()        | int16_t  | none  | read the minimum rotary value (-5000 .. +5000)
+| getRotMax()        | int16_t  | none  | read the maximum rotary value (-5000 .. +5000)
 | getRotSpinTime()   | uint8_t  | none  | read the rotary spin time (2 .. 100 milli seconds)
 | getWhoAmI()        | int8_t   | none  | read the Address Register
 | getLedRed()        | uint8_t  | none  | read the current Red led PWM value (0 .. 255)
@@ -127,6 +127,7 @@ The library gives you the following getters:
 | getMajorRelease()  | uint8_t  | none  | read the Major Firmware Release byte (0 .. 255)
 | getMinorRelease()  | uint8_t  | none  | read the Minor Firmware Release byte (0 .. 255)
 | getModeSettings()  | uint8_t  | none  | read the Mode register byte (0 .. 255)
+| getModeSettings()  | bool     | uint8_t  | read the Mode register byte and test against Parm-Bit
 
 And the library gives you the following helpers:
 
